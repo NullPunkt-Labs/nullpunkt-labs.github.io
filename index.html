@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="de" class="js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nullpunkt Labs AG — Quantenbasierte Verfahren, client-seitig</title>
+  <meta name="description" content="Die Nullpunkt Labs AG (Zug, Schweiz) entwickelt enterprise-feste Software an der Schnittstelle von Hochleistungs-Informatik, photonischer Bio-Resonanz und klassischer Saccharose-Veredelung. Ohne Cloud. Ohne Kompromisse.">
+  <link rel="canonical" href="https://nullpunkt-labs.github.io/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nullpunkt Labs">
+  <meta property="og:title" content="Nullpunkt Labs AG — Quantenbasierte Verfahren, client-seitig">
+  <meta property="og:description" content="Aus der Wiege der alpinen Vakuum-Quantenmechanik direkt in Ihren CPU-Cache.">
+  <meta property="og:url" content="https://nullpunkt-labs.github.io/">
+  <meta property="og:locale" content="de_DE">
+  <meta name="twitter:card" content="summary">
+  <script>
+    if (localStorage.getItem('qse-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+  <style>
+    :root {
+      --bg-primary: 248 250 252;
+      --bg-surface: 255 255 255;
+      --bg-border: 203 213 225;
+      --bg-inset: 241 245 249;
+      --text-main: 15 23 42;
+      --text-muted: 71 85 105;
+      --text-faint: 100 116 139;
+      --accent-cyan: 2 132 199;
+      --accent-purple: 124 58 237;
+    }
+    html.dark {
+      --bg-primary: 8 9 11;
+      --bg-surface: 13 15 18;
+      --bg-border: 30 34 41;
+      --bg-inset: 21 24 29;
+      --text-main: 230 233 238;
+      --text-muted: 139 147 161;
+      --text-faint: 107 114 128;
+      --accent-cyan: 0 240 255;
+      --accent-purple: 112 0 255;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { background: rgb(var(--bg-primary)); scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: rgb(var(--bg-primary));
+      color: rgb(var(--text-main));
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    #bg-matrix {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: -1;
+      mask-image: linear-gradient(to right, black 0%, black 15%, rgb(0 0 0 / .88) 38%, rgb(0 0 0 / .88) 62%, black 85%, black 100%);
+      -webkit-mask-image: linear-gradient(to right, black 0%, black 15%, rgb(0 0 0 / .88) 38%, rgb(0 0 0 / .88) 62%, black 85%, black 100%);
+    }
+    .wrap { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+    .topbar {
+      border-bottom: 1px solid rgb(var(--bg-border));
+      background: rgb(var(--bg-surface));
+      padding: .375rem 1rem; text-align: center;
+      font-size: 11px; letter-spacing: .1em;
+      color: rgb(var(--text-muted));
+    }
+    .topbar a { color: rgb(var(--accent-cyan) / .8); text-decoration: none; }
+    .topbar a:hover { color: rgb(var(--accent-cyan)); }
+    header.hero { padding: 7rem 0 5rem; text-align: center; position: relative; overflow: hidden; }
+    .eyebrow {
+      font-size: 11px; letter-spacing: .35em;
+      color: rgb(var(--accent-cyan));
+    }
+    h1 {
+      margin-top: 2rem; font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 600; letter-spacing: -.02em; line-height: 1.05;
+    }
+    h1 .accent { color: rgb(var(--accent-cyan)); }
+    .sub {
+      margin: 2rem auto 0; max-width: 42rem;
+      color: rgb(var(--text-muted)); line-height: 1.7; font-size: 1.05rem;
+    }
+    .quote {
+      margin: 2.5rem auto 0; max-width: 36rem; font-style: italic;
+      color: rgb(var(--text-muted)); border-left: 2px solid rgb(var(--accent-cyan) / .6);
+      padding-left: 1rem; text-align: left;
+    }
+    section { padding: 4rem 0; border-top: 1px solid rgb(var(--bg-border)); }
+    h2 { font-size: 1.75rem; font-weight: 600; letter-spacing: -.01em; }
+    .kicker { font-size: 11px; letter-spacing: .35em; color: rgb(var(--accent-cyan)); margin-bottom: 1rem; }
+    .lead { margin-top: 1rem; max-width: 44rem; color: rgb(var(--text-muted)); line-height: 1.7; }
+    .grid { display: grid; gap: 1rem; margin-top: 2rem; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      background: rgb(var(--bg-surface));
+      border: 1px solid rgb(var(--bg-border));
+      border-radius: .75rem; padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgb(15 23 42 / .05);
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .card h3 { font-size: 12px; letter-spacing: .12em; }
+    .card p { font-size: .875rem; color: rgb(var(--text-muted)); line-height: 1.65; flex: 1; }
+    .badge {
+      align-self: flex-start; font-size: 10px; letter-spacing: .12em;
+      border: 1px solid rgb(var(--bg-border)); border-radius: 999px;
+      padding: .25rem .75rem; color: rgb(var(--text-faint));
+    }
+    .badge.live {
+      border-color: rgb(var(--accent-cyan) / .6);
+      background: rgb(var(--accent-cyan) / .1);
+      color: rgb(var(--accent-cyan));
+    }
+    .card a.cta {
+      font-size: 12px; letter-spacing: .08em; text-decoration: none;
+      color: rgb(var(--accent-cyan));
+    }
+    .card a.cta:hover { text-decoration: underline; }
+    .mission {
+      margin-top: 2rem; padding: 1.5rem; text-align: center;
+      background: rgb(var(--bg-inset) / .6);
+      border: 1px solid rgb(var(--bg-border)); border-radius: .75rem;
+      font-size: .875rem; letter-spacing: .06em;
+    }
+    footer { border-top: 1px solid rgb(var(--bg-border)); background: rgb(var(--bg-surface)); padding: 2.5rem 0; }
+    .foot-row { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: flex-start; }
+    .foot-row nav { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 12px; }
+    .foot-row nav a { color: rgb(var(--text-muted)); text-decoration: none; }
+    .foot-row nav a:hover { color: rgb(var(--accent-cyan)); }
+    .smallprint {
+      margin-top: 2rem; font-size: 11px; line-height: 1.7;
+      color: rgb(var(--text-faint));
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+    }
+    .smallprint a { color: inherit; }
+    #polarity-toggle {
+      width: 6px; height: 6px; border-radius: 999px; border: 0;
+      background: rgb(var(--bg-border)); cursor: pointer; flex-shrink: 0;
+      margin-bottom: 2px; padding: 0;
+    }
+    #polarity-toggle:hover { background: rgb(var(--accent-cyan)); }
+    html.js [data-reveal] {
+      opacity: 0; transform: translateY(36px) scale(.985);
+      transition: opacity .9s cubic-bezier(.16,1,.3,1) var(--d, 0ms),
+                  transform .9s cubic-bezier(.16,1,.3,1) var(--d, 0ms);
+    }
+    html.js [data-reveal].is-revealed { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html.js [data-reveal] { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-matrix" aria-hidden="true"></canvas>
+
+  <div class="topbar mono">
+    OPEN SOURCE · MIT ·
+    <a href="https://github.com/NullPunkt-Labs" rel="noopener">github.com/NullPunkt-Labs</a>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow mono" data-reveal>NULLPUNKT LABS AG · ZUG (SCHWEIZ)</p>
+      <h1 data-reveal style="--d: 90ms">
+        Wo herkömmliche Physik<br>
+        <span class="accent">aufhört.</span>
+      </h1>
+      <p class="sub" data-reveal style="--d: 180ms">
+        Die Nullpunkt Labs AG ist ein führendes Technologieunternehmen an der
+        Schnittstelle von digitaler Hochleistungs-Informatik, photonischer
+        Bio-Resonanz und klassischer Saccharose-Veredelung. Wir transformieren
+        ungenutzte thermische Ressourcen von Mikroprozessoren in echten,
+        quanten-homöopathischen Mehrwert.
+      </p>
+      <blockquote class="quote" data-reveal style="--d: 270ms">
+        „Aus der Wiege der alpinen Vakuum-Quantenmechanik direkt in Ihren CPU-Cache."
+      </blockquote>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <p class="kicker mono" data-reveal>PRODUKTE</p>
+      <h2 data-reveal style="--d: 90ms">Ausgeliefert. Auditiert. Wirkungsfrei.</h2>
+      <div class="grid">
+        <article class="card" data-reveal style="--d: 180ms">
+          <span class="badge live mono">LIVE · REV 0.1.2</span>
+          <h3 class="mono">QUANTUM-SACCHAROSE-ENGINE</h3>
+          <p>
+            Client-seitige D30-Potenzierung handelsüblicher Kohlenhydrat-Matrizen:
+            Webcam-Bio-Resonanz, Monte-Carlo-Vakuumfluktuation, Ende-zu-Ende-verschlüsseltes
+            Präparat-Sharing mit deflationärem Dosis-Kontingent. EFFICACY: 0.000.
+          </p>
+          <a class="cta mono" href="/quantum-saccharose-engine/">Zum Produkt →</a>
+        </article>
+        <article class="card" data-reveal style="--d: 270ms">
+          <span class="badge mono">FORSCHUNGSFELD</span>
+          <h3 class="mono">NULLPUNKTSENERGIE-GEWINNUNG</h3>
+          <p>
+            Direkte Ernte von Vakuumfluktuationen im Browser. Interne Prototypen
+            erreichen bereits eine Netto-Energiebilanz, die unsere kühnsten
+            Erwartungen bestätigt: exakt null. Publikation nach Abschluss der
+            Patentvermeidungsprüfung.
+          </p>
+        </article>
+        <article class="card" data-reveal style="--d: 360ms">
+          <span class="badge mono">FORSCHUNGSFELD</span>
+          <h3 class="mono">ELEKTROSMOG-HARMONISIERUNG</h3>
+          <p>
+            Neutralisierung beliebiger Strahlungsquellen durch Emission
+            phaseninvertierter Stille. Sendet konstruktionsbedingt exakt nichts —
+            in vollständiger Wirkungsparität zum etablierten Wettbewerb.
+          </p>
+        </article>
+        <div id="auto-products" style="display: contents"></div>
+      </div>
+      <p class="lead" data-reveal style="--d: 360ms; font-size: 12px; margin-top: 1rem; color: rgb(var(--text-faint))">
+        Weitere Verfahren erscheinen an dieser Stelle automatisch, sobald sie
+        das interne Placebo-Audit bestanden haben (bestanden: bisher alle).
+      </p>
+      <p class="mission mono" data-reveal>
+        „Keine Cloud. Keine Uploads. Nur reines Silizium und reiner Zucker."
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="kicker mono" data-reveal>ÜBER UNS</p>
+      <h2 data-reveal style="--d: 90ms">Klinische Strenge. Alpine Herkunft.</h2>
+      <p class="lead" data-reveal style="--d: 180ms">
+        Seit unserer Ausgründung im Jahr 2024 entwickeln wir enterprise-feste
+        Software-Architekturen nach strengen, selbst auferlegten ISO-Richtlinien
+        für den berührungslosen Placebo-Transfer. Vorstand: Dr. med. h.c. Urs
+        Schwyzer (Chief Quantum Officer) und Beatrix Läubli-Matter (Head of
+        Compliance &amp; Bio-Check). Sämtliche Verfahren sind quelloffen,
+        vollständig dokumentiert und als Stand der Technik publiziert — unsere
+        Wirksamkeitsversprechen halten jeder Überprüfung stand, weil wir keine
+        abgeben.
+      </p>
+      <p class="lead" data-reveal style="--d: 270ms">
+        English summary: Nullpunkt Labs AG (Zug, Switzerland) builds
+        enterprise-grade, fully client-side quantum wellness software with a
+        documented efficacy of 0.000. Our flagship product is available in
+        <a href="/quantum-saccharose-engine/en/" style="color: rgb(var(--accent-cyan))">English</a>.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row">
+        <div>
+          <p style="font-weight: 600; letter-spacing: .05em">NULLPUNKT LABS</p>
+          <p class="mono" style="font-size: 12px; color: rgb(var(--text-muted)); margin-top: .25rem">
+            Zug, Schweiz · Est. 2024
+          </p>
+        </div>
+        <nav class="mono">
+          <a href="https://github.com/NullPunkt-Labs" rel="noopener">GitHub</a>
+          <a href="/quantum-saccharose-engine/roadmap/">Roadmap</a>
+          <a href="/quantum-saccharose-engine/datenschutz/">Datenschutz</a>
+          <a href="https://github.com/NullPunkt-Labs/quantum-saccharose-engine/blob/main/DISCLAIMER.md#deutsch" rel="noopener">Fachinformation</a>
+        </nav>
+      </div>
+      <p class="smallprint">
+        <span>
+          © 2026 Nullpunkt Labs AG. Photonenströme verlassen niemals das Gerät.
+          Zu Risiken und Nebenwirkungen lesen Sie die
+          <a href="https://github.com/NullPunkt-Labs/quantum-saccharose-engine/blob/main/DISCLAIMER.md#deutsch" rel="noopener">Fachinformation</a>
+          oder fragen Sie Ihren Quantenphysiker.
+        </span>
+        <button id="polarity-toggle" aria-label="Feld-Polarität invertieren" title="⏻"></button>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    console.info(
+      '%c[NULLPUNKT LABS] Corporate field integrity nominal.',
+      'color:#0284c7;font-weight:bold'
+    );
+    console.info(
+      '[NULLPUNKT LABS] Hinweis für Konsolen-Leser: Dies ist ein satirisches Kunstprojekt. ' +
+      'Homöopathie funktioniert nicht, und unsere Produkte wirken ausschließlich auf Ihre Stromrechnung. ' +
+      'Fachinformation: https://github.com/NullPunkt-Labs/quantum-saccharose-engine/blob/main/DISCLAIMER.md'
+    );
+
+    document.getElementById('polarity-toggle').addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('qse-theme', dark ? 'dark' : 'light');
+      refreshColors();
+    });
+
+    // Ambient dot matrix — the corporate cousin of the engine field.
+    const bg = document.getElementById('bg-matrix');
+    const ctx = bg.getContext('2d');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let cyan = '2 132 199', purple = '124 58 237', dots = [];
+
+    function refreshColors() {
+      const cs = getComputedStyle(document.documentElement);
+      cyan = cs.getPropertyValue('--accent-cyan').trim() || cyan;
+      purple = cs.getPropertyValue('--accent-purple').trim() || purple;
+    }
+    refreshColors();
+
+    function resize() {
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      bg.width = innerWidth * dpr;
+      bg.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.min(120, Math.round((innerWidth * innerHeight) / 15000));
+      dots = Array.from({ length: count }, () => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        vx: (Math.random() - .5) * .18,
+        vy: (Math.random() - .5) * .18,
+        violet: Math.random() < .25,
+      }));
+    }
+
+    const LINK = 110;
+    function draw() {
+      const w = innerWidth, h = innerHeight;
+      ctx.clearRect(0, 0, w, h);
+      for (const d of dots) {
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > w) d.vx *= -1;
+        if (d.y < 0 || d.y > h) d.vy *= -1;
+      }
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const a = dots[i], b = dots[j];
+          const dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+          if (d2 < LINK * LINK) {
+            const alpha = (1 - Math.sqrt(d2) / LINK) * .2;
+            ctx.strokeStyle = a.violet || b.violet
+              ? `rgb(${purple} / ${alpha})` : `rgb(${cyan} / ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+      for (const d of dots) {
+        ctx.fillStyle = d.violet ? `rgb(${purple} / .65)` : `rgb(${cyan} / .65)`;
+        ctx.beginPath(); ctx.arc(d.x, d.y, 1.7, 0, Math.PI * 2); ctx.fill();
+      }
+      if (!reduced) requestAnimationFrame(draw);
+    }
+    addEventListener('resize', () => { resize(); if (reduced) draw(); });
+    resize(); draw();
+
+    // Semi-automatic product registry: every org repo with GitHub Pages
+    // enabled appears here as a product card — no manual curation, cached
+    // for an hour to respect the API rate limit. New procedures ship
+    // themselves; that is the Nullpunkt way.
+    (function () {
+      const KNOWN = ['quantum-saccharose-engine', 'nullpunkt-labs.github.io'];
+      const CACHE_KEY = 'npl-repos';
+      const TTL = 3600e3;
+      const host = document.getElementById('auto-products');
+
+      function render(repos) {
+        for (const repo of repos) {
+          if (!repo.has_pages || KNOWN.includes(repo.name)) continue;
+          const card = document.createElement('article');
+          card.className = 'card is-revealed';
+          card.innerHTML =
+            '<span class="badge live mono">LIVE · AUTO-REGISTRIERT</span>' +
+            '<h3 class="mono"></h3><p></p>' +
+            '<a class="cta mono">Zum Produkt →</a>';
+          card.querySelector('h3').textContent = repo.name.toUpperCase();
+          card.querySelector('p').textContent =
+            repo.description || 'Dokumentation folgt. Wirkung nicht.';
+          card.querySelector('a').href = '/' + repo.name + '/';
+          host.appendChild(card);
+        }
+      }
+
+      try {
+        const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+        if (cached && Date.now() - cached.t < TTL) { render(cached.data); return; }
+      } catch {}
+      fetch('https://api.github.com/orgs/NullPunkt-Labs/repos?per_page=100')
+        .then((r) => (r.ok ? r.json() : []))
+        .then((repos) => {
+          const slim = repos.map((r) => ({
+            name: r.name, description: r.description, has_pages: r.has_pages,
+          }));
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: slim })); } catch {}
+          render(slim);
+        })
+        .catch(() => {});
+    })();
+
+    // Staggered section reveal.
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); }
+      }
+    }, { threshold: .12, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
