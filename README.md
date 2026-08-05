@@ -2,7 +2,7 @@
 
 Corporate Landingpage der Nullpunkt Labs AG (Zug, Schweiz).
 
-Handgeschriebenes HTML, kein Build-Step, kein Framework, keine Abhängigkeiten —
+Handgeschriebenes HTML, kein Build-Step, kein Framework, keine Abhängigkeiten,
 so wie unsere Wirksamkeitsnachweise: vollständig statisch.
 
 **Live:** https://nullpunkt-labs.github.io/

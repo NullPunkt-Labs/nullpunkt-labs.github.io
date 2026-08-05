@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nullpunkt Labs AG — Quantenbasierte Verfahren, client-seitig</title>
+  <title>Nullpunkt Labs AG · Quantenbasierte Verfahren, client-seitig</title>
   <meta name="description" content="Die Nullpunkt Labs AG (Zug, Schweiz) entwickelt enterprise-feste Software an der Schnittstelle von Hochleistungs-Informatik, photonischer Bio-Resonanz und klassischer Saccharose-Veredelung. Ohne Cloud. Ohne Kompromisse.">
   <link rel="canonical" href="https://nullpunkt-labs.github.io/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Nullpunkt Labs">
-  <meta property="og:title" content="Nullpunkt Labs AG — Quantenbasierte Verfahren, client-seitig">
+  <meta property="og:title" content="Nullpunkt Labs AG · Quantenbasierte Verfahren, client-seitig">
   <meta property="og:description" content="Aus der Wiege der alpinen Vakuum-Quantenmechanik direkt in Ihren CPU-Cache.">
   <meta property="og:url" content="https://nullpunkt-labs.github.io/">
   <meta property="og:locale" content="de_DE">
@@ -18,6 +18,9 @@
   <script>
     if (localStorage.getItem('qse-theme') === 'dark') {
       document.documentElement.classList.add('dark');
+    }
+    if (localStorage.getItem('qse-font') === 'big') {
+      document.documentElement.classList.add('bigfont');
     }
   </script>
   <style>
@@ -141,6 +144,17 @@
       margin-bottom: 2px; padding: 0;
     }
     #polarity-toggle:hover { background: rgb(var(--accent-cyan)); }
+    html.bigfont { font-size: 118%; }
+    html.bigfont .topbar, html.bigfont .eyebrow, html.bigfont .kicker,
+    html.bigfont .smallprint { font-size: 13px; }
+    html.bigfont .card h3 { font-size: 14px; }
+    html.bigfont .badge { font-size: 12px; }
+    html.bigfont .foot-row nav { font-size: 14px; }
+    #font-toggle {
+      font: inherit; background: none; border: 0; cursor: pointer;
+      color: rgb(var(--accent-cyan) / .8); letter-spacing: .1em; padding: 0;
+    }
+    #font-toggle:hover { color: rgb(var(--accent-cyan)); }
     html.js [data-reveal] {
       opacity: 0; transform: translateY(36px) scale(.985);
       transition: opacity .9s cubic-bezier(.16,1,.3,1) var(--d, 0ms),
@@ -158,6 +172,7 @@
   <div class="topbar mono">
     OPEN SOURCE · MIT ·
     <a href="https://github.com/NullPunkt-Labs" rel="noopener">github.com/NullPunkt-Labs</a>
+    · <button id="font-toggle" type="button" aria-label="Schriftgröße umschalten" title="Schriftgröße">A⁺</button>
   </div>
 
   <header class="hero">
@@ -211,7 +226,7 @@
           <span class="badge mono">COMING SOON · EDGE</span>
           <h3 class="mono">HARMONIZER-5G</h3>
           <p>
-            Elektrosmog-Harmonisierung durch Emission phaseninvertierter Stille —
+            Elektrosmog-Harmonisierung durch Emission phaseninvertierter Stille,
             arbeitet vollständig emissionsfrei und erreicht damit Wirkungsparität
             mit dem etablierten Wettbewerb. Demnächst als Docker-Container für
             Raspberry Pi: Ihr Raspi. Gegen 5G. Rund um die Uhr.
@@ -238,10 +253,8 @@
         Software-Architekturen nach strengen, selbst auferlegten ISO-Richtlinien
         für den berührungslosen Placebo-Transfer. Vorstand: Dr. quant. h.c.
         Urs-Viktor Nullmatter (Chief Quantum Officer) und Beatrix Läubli-Matter
-        (Head of Compliance &amp; Bio-Check) — sämtliche genannten Personen
-        sind frei erfunden; Ähnlichkeiten mit lebenden oder verstorbenen
-        Personen wären rein zufällig. Sämtliche Verfahren sind quelloffen,
-        vollständig dokumentiert und als Stand der Technik publiziert — unsere
+        (Head of Compliance &amp; Bio-Check). Sämtliche Verfahren sind quelloffen,
+        vollständig dokumentiert und als Stand der Technik publiziert, unsere
         Wirksamkeitsaussagen haben bislang jeder unabhängigen Überprüfung
         standgehalten.
       </p>
@@ -273,7 +286,8 @@
       </div>
       <p class="smallprint">
         <span>
-          © 2026 Nullpunkt Labs AG. Photonenströme verlassen niemals das Gerät.
+          © 2026 Nullpunkt Labs AG. Alle Rechte vorbehalten, alle genannten Personen
+          frei erfunden. Photonenströme verlassen niemals das Gerät.
           Zu Risiken und Nebenwirkungen lesen Sie die
           <a href="/quantum-saccharose-engine/fachinformation/">Fachinformation</a>
           oder fragen Sie Ihren Quantenphysiker.
@@ -294,13 +308,26 @@
       'Fachinformation: https://github.com/NullPunkt-Labs/quantum-saccharose-engine/blob/main/DISCLAIMER.md'
     );
 
+    const ft = document.getElementById('font-toggle');
+    function syncFontToggle() {
+      const big = document.documentElement.classList.contains('bigfont');
+      ft.textContent = big ? 'A⁻' : 'A⁺';
+      ft.setAttribute('aria-pressed', String(big));
+    }
+    ft.addEventListener('click', () => {
+      const big = document.documentElement.classList.toggle('bigfont');
+      localStorage.setItem('qse-font', big ? 'big' : 'normal');
+      syncFontToggle();
+    });
+    syncFontToggle();
+
     document.getElementById('polarity-toggle').addEventListener('click', () => {
       const dark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('qse-theme', dark ? 'dark' : 'light');
       refreshColors();
     });
 
-    // Ambient dot matrix — the corporate cousin of the engine field.
+    // Ambient dot matrix, the corporate cousin of the engine field.
     const bg = document.getElementById('bg-matrix');
     const ctx = bg.getContext('2d');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -360,7 +387,7 @@
     resize(); draw();
 
     // Semi-automatic product registry: every org repo with GitHub Pages
-    // enabled appears here as a product card — no manual curation, cached
+    // enabled appears here as a product card, no manual curation, cached
     // for an hour to respect the API rate limit. New procedures ship
     // themselves; that is the Nullpunkt way.
     (function () {
