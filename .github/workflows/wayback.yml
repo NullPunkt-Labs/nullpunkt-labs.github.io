@@ -1,0 +1,44 @@
+name: Wayback snapshots
+
+# Selbstarchivierung: alle Seiten der Org werden am 1. und 15. jedes
+# Monats bei der Internet Archive Wayback Machine eingereicht. Der
+# anschließende Log-Commit dient als Protokoll und hält den Zeitplan
+# aktiv (GitHub deaktiviert Cron-Workflows nach 60 Tagen Inaktivität).
+
+on:
+  schedule:
+    - cron: '23 3 1,15 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Submit pages to the Internet Archive
+        run: |
+          set -u
+          BASE="https://nullpunkt-labs.github.io"
+          PAGES="/ /quantum-saccharose-engine/ /quantum-saccharose-engine/en/ /quantum-saccharose-engine/roadmap/ /quantum-saccharose-engine/en/roadmap/ /quantum-saccharose-engine/ueber-uns/ /quantum-saccharose-engine/en/about/ /quantum-saccharose-engine/datenschutz/ /quantum-saccharose-engine/en/privacy/ /quantum-saccharose-engine/fachinformation/ /quantum-saccharose-engine/en/leaflet/"
+          ok=0; total=0; codes=""
+          for p in $PAGES; do
+            total=$((total+1))
+            code=$(curl -s -m 120 -o /dev/null -w '%{http_code}' "https://web.archive.org/save/${BASE}${p}" || echo ERR)
+            codes="$codes $code"
+            case "$code" in 2*|3*) ok=$((ok+1));; esac
+            sleep 15
+          done
+          echo "$(date -u +%F): $ok/$total accepted ($codes )" >> wayback.log
+          echo "Result: $ok/$total accepted"
+
+      - name: Commit log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add wayback.log
+          git commit -m "Wayback snapshot log $(date -u +%F)" || exit 0
+          git push
